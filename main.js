@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 尋找是否點擊在 .seiyuu-card-inner 或其子元素上
         const inner = e.target.closest('.seiyuu-card-inner');
         const card = inner ? inner.closest('.seiyuu-card') : null;
-        
+
         if (card) {
             e.stopPropagation();
             // 關閉所有其他的 active 狀態
