@@ -591,10 +591,10 @@ body {
 }
 
 .node-tomori { top: 50%; left: 50%; border-color: var(--color-tomori); width: 130px; height: 130px; box-shadow: 0 0 20px var(--color-tomori); }
-.node-anon { top: 25%; left: 75%; border-color: var(--color-anon); }
-.node-rana { top: 25%; left: 25%; border-color: var(--color-rana); }
-.node-taki { top: 75%; left: 25%; border-color: var(--color-taki); }
-.node-soyo { top: 75%; left: 75%; border-color: var(--color-soyo); }
+.node-anon { top: 20%; left: 80%; border-color: var(--color-anon); }
+.node-rana { top: 20%; left: 20%; border-color: var(--color-rana); }
+.node-taki { top: 80%; left: 20%; border-color: var(--color-taki); }
+.node-soyo { top: 80%; left: 80%; border-color: var(--color-soyo); }
 
 .relation-container.active-taki .line-group:not([data-group~="taki"]),
 .relation-container.active-soyo .line-group:not([data-group~="soyo"]),
@@ -641,20 +641,15 @@ body {
     transform: translateX(0);
 }
 
-.track-number {
+.track-num {
     font-family: 'Oswald', sans-serif;
     color: var(--text-muted);
     margin-right: 1rem;
 }
 
-.track-title {
+.track-name {
     font-weight: 700;
     flex-grow: 1;
-}
-
-.track-duration {
-    color: var(--text-muted);
-    font-family: 'Oswald', sans-serif;
 }
 
 /* Footer */
@@ -680,23 +675,24 @@ footer {
 
 /* YouTube Modal */
 .modal {
-    display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 20000; /* 確保在所有 Modal 之上 */
     left: 0;
     top: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.95);
+    display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    pointer-events: none;
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .modal.active {
-    display: flex;
     opacity: 1;
+    pointer-events: auto;
 }
 
 .modal-content {
@@ -962,17 +958,7 @@ footer {
     max-width: 600px;
 }
 
-.seiyuu-modal-role {
-    order: 1;
-    font-size: 1.8rem;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
-    font-family: 'Oswald', sans-serif;
-    letter-spacing: 2px;
-}
-
 .seiyuu-modal-romaji {
-    order: 2;
     font-size: 1.5rem;
     color: var(--text-muted);
     text-transform: uppercase;
@@ -981,7 +967,6 @@ footer {
 }
 
 .seiyuu-modal-name {
-    order: 3;
     font-size: 4rem;
     font-weight: bold;
     margin-bottom: 2rem;
@@ -990,7 +975,6 @@ footer {
 }
 
 .seiyuu-modal-desc {
-    order: 4;
     font-size: 1.4rem;
     line-height: 1.8;
     color: #ddd;
