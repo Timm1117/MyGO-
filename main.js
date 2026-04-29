@@ -203,88 +203,40 @@ document.addEventListener('DOMContentLoaded', () => {
         relationPopup.style.top = (e.clientY - rect.top - 20) + 'px';
     });
 
-    // YouTube Modal Logic
-    const ytTriggers = document.querySelectorAll('.yt-trigger');
-    const ytModal = document.getElementById('yt-modal');
-    const closeModal = document.querySelector('.close-modal');
-    const videoContainer = document.querySelector('.video-container');
+    // YouTube Modal Logic (已棄用，改為直接連結，移除以避免錯誤)
 
-    function openModal(videoId) {
-        // Inject iframe dynamically
-        videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-        ytModal.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
-    }
-
-    function closeVideoModal() {
-        ytModal.classList.remove('active');
-        videoContainer.innerHTML = ''; // Remove iframe to stop playing
-        document.body.style.overflow = ''; // Restore scrolling
-    }
-
-    ytTriggers.forEach(trigger => {
-        trigger.addEventListener('click', (e) => {
-            e.preventDefault();
-            const videoData = trigger.getAttribute('data-video-id');
-            if (videoData) {
-                let videoId = videoData;
-
-                // 使用正則表達式精確提取 11 位元的影片 ID
-                // 支援格式：youtu.be/ID, youtube.com/watch?v=ID, youtube.com/embed/ID 等
-                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-                const match = videoData.match(regExp);
-
-                if (match && match[2].length === 11) {
-                    videoId = match[2];
-                }
-
-                if (videoId && videoId.length === 11) {
-                    openModal(videoId);
-                } else {
-                    console.error('Invalid YouTube ID or URL:', videoData);
-                    alert('無法識別此影片連結，請檢查格式是否正確。');
-                }
-            }
-        });
-    });
-
-    closeModal.addEventListener('click', closeVideoModal);
-
-    // Close modal on background click
-    ytModal.addEventListener('click', (e) => {
-        if (e.target === ytModal) {
-            closeVideoModal();
-        }
-    });
-
-    // Seiyuu Modal Logic
-    const seiyuuCards = document.querySelectorAll('.seiyuu-card');
-    seiyuuCards.forEach(card => {
-        const inner = card.querySelector('.seiyuu-card-inner');
-        const closeBtn = card.querySelector('.seiyuu-modal-close');
-
-        // Open modal on clicking the card
-        inner.addEventListener('click', () => {
-            seiyuuCards.forEach(c => c.classList.remove('active')); // Close others
+    // --- Seiyuu Modal Logic (Event Delegation) ---
+    document.addEventListener('click', (e) => {
+        // 尋找是否點擊在 .seiyuu-card-inner 或其子元素上
+        const inner = e.target.closest('.seiyuu-card-inner');
+        const card = inner ? inner.closest('.seiyuu-card') : null;
+        
+        if (card) {
+            e.stopPropagation();
+            // 關閉所有其他的 active 狀態
+            document.querySelectorAll('.seiyuu-card.active').forEach(c => c.classList.remove('active'));
+            // 開啟當前卡片
             card.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
-        });
-
-        // Close modal via close button
-        if (closeBtn) {
-            closeBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                card.classList.remove('active');
-                document.body.style.overflow = '';
-            });
+            document.body.style.overflow = 'hidden';
+            return;
         }
 
-        // Close modal via backdrop click (the pseudo-element captures clicks on the .seiyuu-card element itself)
-        card.addEventListener('click', (e) => {
-            if (e.target === card) {
-                card.classList.remove('active');
+        // 關閉按鈕邏輯
+        const closeBtn = e.target.closest('.seiyuu-modal-close');
+        if (closeBtn) {
+            const activeCard = closeBtn.closest('.seiyuu-card');
+            if (activeCard) {
+                activeCard.classList.remove('active');
                 document.body.style.overflow = '';
             }
-        });
+            return;
+        }
+
+        // 點擊背景關閉
+        const activeCard = document.querySelector('.seiyuu-card.active');
+        if (activeCard && e.target === activeCard) {
+            activeCard.classList.remove('active');
+            document.body.style.overflow = '';
+        }
     });
 });

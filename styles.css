@@ -1026,6 +1026,11 @@ footer {
 }
 
 /* Trigger Modal on Click (active class) */
+.seiyuu-card.active {
+    transform: none !important;
+    z-index: 10001;
+}
+
 .seiyuu-card.active::before {
     opacity: 1;
     pointer-events: auto;
