@@ -228,12 +228,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const videoData = trigger.getAttribute('data-video-id');
             if (videoData) {
                 let videoId = videoData;
-                
+
                 // 使用正則表達式精確提取 11 位元的影片 ID
                 // 支援格式：youtu.be/ID, youtube.com/watch?v=ID, youtube.com/embed/ID 等
                 const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
                 const match = videoData.match(regExp);
-                
+
                 if (match && match[2].length === 11) {
                     videoId = match[2];
                 }
